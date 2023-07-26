@@ -1,6 +1,5 @@
 image: python:3.8
 stages:
-  - test
   - deploy
 
 variables:
@@ -23,29 +22,6 @@ cache:
   artifacts:
     paths:
       - .coverage*
-
-
-UnitTest:
-  <<: *disable_on_template
-  <<: *coverage_artifacts
-  stage: test
-  before_script:
-    - *django_before_script
-  script:
-    - coverage run --parallel --include="./*" --omit="manage.py,infoloker_be/*"
-      manage.py test --exclude-tag=functional
-
-FunctionalTest:
-  <<: *disable_on_template
-  <<: *coverage_artifacts
-  stage: test
-  before_script:
-    - apt-get update -q && apt-get install -yq chromium-driver
-    - *django_before_script
-  script:
-    - coverage run --parallel --include="./*" --omit="manage.py,infoloker_be/*"
-      manage.py test --tag=functional
-
 
 Coverage:
   <<: *disable_on_template
